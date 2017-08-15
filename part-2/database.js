@@ -16,15 +16,15 @@ function allRooms() {
     SELECT
       rooms.number AS "Room #",
       rooms.capacity AS "Capacity",
-      (rooms.id NOT IN
-        (
-          SELECT room_id
-          FROM bookings
-          WHERE current_date
-          BETWEEN check_in AND check_out
-        )
-      ) AS "Available"
+      (occupied_rooms.room_id IS NULL) AS "Available"
     FROM rooms
+    LEFT JOIN (
+      SELECT room_id
+      FROM bookings
+      WHERE current_date
+      BETWEEN check_in AND check_out
+    ) AS occupied_rooms
+    ON rooms.id = occupied_rooms.room_id
     ORDER BY rooms.number ASC;
     `);
 }
@@ -45,6 +45,7 @@ function availableRooms() {
       `);
 }
 
+// function upcomingBookings()
 
 module.exports = {
   allGuests,
