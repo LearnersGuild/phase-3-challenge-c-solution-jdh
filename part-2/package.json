@@ -9,11 +9,12 @@
     "db:create": "createdb hotel_db",
     "db:drop": "dropdb hotel_db",
     "db:schema": "psql -d hotel_db -f schema.sql",
-    "db:seed": "psql -d hotel_db -f load-data.sql"
+    "db:seed": "psql -d hotel_db -f load-data.sql",
+    "db:setup": "npm run db:drop && npm run db:create && npm run db:schema && npm run db:seed"
   },
   "keywords": [],
-  "author": "Justin Haaheim",
   "dependencies": {
+    "cli-table": "^0.3.1",
     "pg-promise": "^6.4.0"
   },
   "devDependencies": {
