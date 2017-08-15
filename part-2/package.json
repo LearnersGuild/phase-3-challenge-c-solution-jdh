@@ -1,0 +1,23 @@
+{
+  "name": "part-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha database_test.js",
+    "start:postgres": "brew services start postgresql",
+    "db:create": "createdb hotel_db",
+    "db:drop": "dropdb hotel_db",
+    "db:schema": "psql -d hotel_db -f schema.sql",
+    "db:seed": "psql -d hotel_db -f load-data.sql"
+  },
+  "keywords": [],
+  "author": "Justin Haaheim",
+  "dependencies": {
+    "pg-promise": "^6.4.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0"
+  }
+}
