@@ -3,17 +3,44 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+
 app.use(bodyParser.json());
 
+const apiRouter = express.Router();
+
+apiRouter.get('/shout/:word', (req, res) => {
+  const { word } = req.params;
+  res.send(`${word.toUpperCase()}!!!`);
+});
+
+const merge = (a, b) => {
+  let i = 0;
+  let j = 0;
+  let result = [];
+  while (i < a.length && j < b.length) {
+    result.push(a[i]);
+    result.push(b[j]);
+    i += 1;
+    j += 1;
+  }
+  console.log(`a = ${a}; i = ${i}; a.slice = ${a.slice(i)}`);
+  console.log(`b = ${b}`);
+  result = result.concat(a.slice(i)).concat(b.slice(j));
+  return result;
+};
+
+apiRouter.post('/array/merge', (req, res) => {
+  const { a, b } = req.body;
+  if (!(a instanceof Array && b instanceof Array)) {
+    res.json({ error: 'Both keys in request body must be of type Array.' });
+  }
+  res.json({ result: merge(a, b) });
+});
+
+
+app.use('/api', apiRouter);
+
 const port = process.env.PORT || 3000;
-
-const router = express.Router();
-
-router.get('/', (req, res) => {
-  res.json({message: 'hello worrrrld!'});
-})
-
-app.use('/api', router);
-
-app.listen(port);
-console.log(`Server listening on port ${port}`);
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});

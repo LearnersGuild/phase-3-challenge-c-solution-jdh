@@ -1,3 +1,3 @@
 # Example Solution for Phase 3 Interview Coding Challenge
 
-By @justinhaaheim, completed ~ 2017/08
+By @justinhaaheim, in progress ~ 2017/08
