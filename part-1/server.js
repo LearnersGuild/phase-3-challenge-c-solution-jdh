@@ -9,7 +9,10 @@ const apiRouter = express.Router();
 
 apiRouter.get('/shout/:word', (req, res) => {
   const { word } = req.params;
-  res.set('Content-Type', 'application/text').send(`${word.toUpperCase()}!!!`);
+  res
+    .status(200)
+    .set('Content-Type', 'application/text')
+    .send(`${word.toUpperCase()}!!!`);
 });
 
 apiRouter.post('/array/merge', (req, res) => {
@@ -32,14 +35,12 @@ app.listen(port, () => {
 
 const merge = (a, b) => {
   let i = 0;
-  let j = 0;
   let result = [];
-  while (i < a.length && j < b.length) {
+  while (i < a.length && i < b.length) {
     result.push(a[i]);
-    result.push(b[j]);
+    result.push(b[i]);
     i += 1;
-    j += 1;
   }
-  result = result.concat(a.slice(i)).concat(b.slice(j));
+  result = result.concat(a.slice(i)).concat(b.slice(i));
   return result;
 };

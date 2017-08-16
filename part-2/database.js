@@ -45,12 +45,30 @@ function availableRooms() {
       `);
 }
 
-// function upcomingBookings()
+function upcomingBookings(room) {
+  const room_query = room ? 'rooms.number = $1' : 'TRUE';
+
+  return db.query(`
+    SELECT
+      rooms.number AS "Room #",
+      guests.name AS "Guest Name",
+      bookings.check_in AS "Check-In",
+      bookings.check_out AS "Check-Out"
+    FROM bookings
+    LEFT JOIN rooms ON rooms.id = bookings.room_id
+    LEFT JOIN guests ON guests.id = bookings.guest_id
+    WHERE ${room_query} AND bookings.check_out > current_date
+    ORDER BY bookings.check_in ASC;
+  `,
+  [room]
+  );
+}
 
 module.exports = {
   allGuests,
   allRooms,
   availableRooms,
+  upcomingBookings
 };
 
 if (!module.parent) {
@@ -65,6 +83,8 @@ if (!module.parent) {
   allGuests().then(showResults('allGuests()'));
   allRooms().then(showResults('allRooms()'));
   availableRooms().then(showResults('availableRooms()'));
+  upcomingBookings().then(showResults(`upcomingBookings()`));
+  upcomingBookings("3C").then(showResults(`upcomingBookings("3C")`));
 
   pgp.end();
 }
