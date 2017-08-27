@@ -5,6 +5,22 @@ body {
   font-family: "Lucida Grande", "Helvetica", sans-serif;
 }
 
+/* LAYOUT UTILS */
+.flex {
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row-between {
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
 /* HEADER */
 .site-header {
   flex: 0;
@@ -44,4 +60,53 @@ body {
 
 .room-list td button {
   font-size: 18px;
+}
+
+
+/* MODAL */
+.modal-container {
+  display: none;
+  visibility: hidden;
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  min-width: 40%;
+  max-width: 80%;
+  padding: 12px;
+  background-color: #fff;
+  border: 2px solid #333;
+  box-shadow: #333 0px 4px 24px;
+}
+
+.modal-header {
+
+}
+
+.modal-header button {
+  border: none;
+  background: none;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+.modal-body {
+
+}
+
+.row {
+  margin: 5px 0px;
+}
+
+.bold {
+  font-weight: bold;
 }
