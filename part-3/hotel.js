@@ -35,7 +35,7 @@ const parseItem = (roomElem) => {
 /* eslint-disable object-shorthand, func-names */
 // Primary user actions
 const ACTIONS = {
-  initiateBooking: function(e) {
+  openBooking: function(e) {
     e.preventDefault()
 
     const buttonElem = this
@@ -60,53 +60,39 @@ const ACTIONS = {
 // Main interactive elements
 const ELEMENTS = {
   modalContainer: () => document.querySelector('.modal-container'),
-
   modalCloseBtn: () => document.querySelector('.js-modal-close'),
-  modalOpenBtn: () => document.querySelector('.js-modal-open'),
 
-  addToCartBtns: () => document.querySelectorAll('.js-add-to-cart'),
-  clearCartBtn: () => document.querySelector('.js-clear-cart'),
+  openBookingBtns: () => document.querySelectorAll('.js-open-booking'),
+  // clearCartBtn: () => document.querySelector('.js-clear-cart'),
 
-  cartCount: () => document.querySelector('.js-cart-count'),
-  cartItems: () => document.querySelector('.js-cart-items'),
-  cartTotal: () => document.querySelector('.js-cart-total'),
+  bookingRoomNumber: () => document.querySelector('.js-booking-room-number'),
+  bookingRate: () => document.querySelector('.js-booking-rate'),
+  bookingNumNights: () => document.querySelector('.js-booking-num-nights'),
+  bookingTotal: () => document.querySelector('.js-booking-total'),
 }
 
 // User interface
 const UI = {
   refresh: () => {
-    UI.renderCartCount()
-    UI.renderCartItems()
-    UI.renderCartTotal()
+    UI.initializeBooking()
+    UI.renderBookingDetails()
+    UI.renderBookingTotal()
   },
 
-  renderCartCount: () => {
-    ELEMENTS.cartCount().innerText = `(${Cart.count()})`
+  initializeBooking: () => {
+    ELEMENTS.bookingNumNights().value = 1
   },
 
-  renderCartItems: () => {
-    const items = Cart.items.map((item) => {
-      return `
-        <li class="item flex flex-row-between">
-          <span class="item-name">${item.name}</span>
-          <span class="item-price">$${item.price}</span>
-        </li>
-      `
-    }).join("\n")
-
-    const itemsList = `
-      <ul class="item-section">
-        {items}
-      </ul>
-    `
-
-    ELEMENTS.cartItems().innerHTML = itemsList
+  renderBookingDetails: () => {
+    ELEMENTS.bookingRoomNumber().innerText = Booking.roomNumber
+    ELEMENTS.bookingRate().innerText = `$${Booking.rate}`
   },
 
-  renderCartTotal: () => {
-    ELEMENTS.cartTotal().innerText = `$${Cart.total()}`
+  renderBookingTotal: () => {
+    ELEMENTS.bookingTotal().innerText = `$${Booking.total()}`
   },
 
+// Continue work below --v
   showModal: function(e) {
     e.preventDefault()
 

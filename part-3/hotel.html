@@ -27,43 +27,43 @@
           <td>2B</td>
           <td>4</td>
           <td>$59.99</td>
-          <td><button>Book</button></td>
+          <td><button class="js-open-booking">Book</button></td>
         </tr>
         <tr id="room2A">
           <td>2A</td>
           <td>4</td>
           <td>$59.99</td>
-          <td><button>Book</button></td>
+          <td><button class="js-open-booking">Book</button></td>
         </tr>
         <tr id="room3A">
           <td>3A</td>
           <td>2</td>
           <td>$45.00</td>
-          <td><button>Book</button></td>
+          <td><button class="js-open-booking">Book</button></td>
         </tr>
         <tr id="room3B">
           <td>3B</td>
           <td>2</td>
           <td>$45.00</td>
-          <td><button>Book</button></td>
+          <td><button class="js-open-booking">Book</button></td>
         </tr>
         <tr id="room3C">
           <td>3C</td>
           <td>3</td>
           <td>$52.64</td>
-          <td><button>Book</button></td>
+          <td><button class="js-open-booking">Book</button></td>
         </tr>
         <tr id="room4A">
           <td>4A</td>
           <td>4</td>
           <td>$59.99</td>
-          <td><button>Book</button></td>
+          <td><button class="js-open-booking">Book</button></td>
         </tr>
         <tr id="room4B">
           <td>4B</td>
           <td>4</td>
           <td>$59.99</td>
-          <td><button>Book</button></td>
+          <td><button class="js-open-booking">Book</button></td>
         </tr>
       </tbody>
     </table>
@@ -78,8 +78,8 @@
 
       <div class="modal-body flex flex-column">
         <div class="row flex flex-row-between">
-          <label class="bold">Room <span id="room-number"></span></label>
-          <span class="bold"><span id="room-rate"></span> / night</span>
+          <label class="bold">Room <span id="js-booking-room-number"></span></label>
+          <span class="bold"><span id="js-booking-rate"></span> / night</span>
         </div>
 
         <div class="row flex flex-row-between">
@@ -92,12 +92,12 @@
           <label for="num-nights">Nights</label>
           <!-- can I get rid of this span and just use the input class="right"? -->
           <span class="right">
-            <input type="number" name="num-nights" min="1" max="5">
+            <input type="number" name="num-nights" class="js-booking-num-nights" min="1" max="5">
           </span>
         </div>
 
         <div class="row flex flex-row-between">
-          <label class="bold">Total <span id="booking-total"></span></label>
+          <label class="bold">Total <span class="js-booking-total"></span></label>
           <span class="right">
             <button type="button" class="confirm-button">Confirm</button>
           </span>
