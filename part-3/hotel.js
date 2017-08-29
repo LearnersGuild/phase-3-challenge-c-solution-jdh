@@ -1,22 +1,24 @@
-const Booking = {
+const STORE = {
+  modalVisible: false,
+
   roomNumber: undefined,
 
   rate: undefined,
 
   nights: undefined,
 
-  total: () => Booking.rate * Booking.nights,
+  total: () => STORE.rate * STORE.nights,
 
-  initialize: (room) => {
-    Booking.roomNumber = room.roomNumber
-    Booking.rate = room.rate
-    Booking.nights = 1
+  load: (room) => {
+    STORE.roomNumber = room.roomNumber
+    STORE.rate = room.rate
+    STORE.nights = 1
   },
 
   clear: () => {
-    Booking.roomNumber = undefined
-    Booking.rate = undefined
-    Booking.nights = undefined
+    STORE.roomNumber = undefined
+    STORE.rate = undefined
+    STORE.nights = undefined
   },
 }
 
@@ -43,14 +45,28 @@ const ACTIONS = {
 
     const room = parseItem(roomElem)
 
-    Booking.initialize(room)
+    STORE.modalVisible = true
+
+    STORE.load(room)
     UI.refresh()
   },
 
-  clearBooking: function(e) {
+  changeNights: function (e) {
     e.preventDefault()
 
-    Booking.clear()
+    const inputElem = this
+    const nights = inputElem.value
+
+    STORE.nights = nights
+    UI.refresh()
+  },
+
+  closeBooking: function(e) {
+    e.preventDefault()
+
+    STORE.modalVisible = false
+
+    STORE.clear()
     UI.refresh()
   },
 }
@@ -63,10 +79,9 @@ const ELEMENTS = {
   modalCloseBtn: () => document.querySelector('.js-modal-close'),
 
   openBookingBtns: () => document.querySelectorAll('.js-open-booking'),
-  // clearCartBtn: () => document.querySelector('.js-clear-cart'),
 
-  bookingRoomNumber: () => document.querySelector('.js-booking-room-number'),
-  bookingRate: () => document.querySelector('.js-booking-rate'),
+  bookingRoomNumber: () => document.querySelector('#js-booking-room-number'),
+  bookingRate: () => document.querySelector('#js-booking-rate'),
   bookingNumNights: () => document.querySelector('.js-booking-num-nights'),
   bookingTotal: () => document.querySelector('.js-booking-total'),
 }
@@ -74,37 +89,42 @@ const ELEMENTS = {
 // User interface
 const UI = {
   refresh: () => {
-    UI.initializeBooking()
     UI.renderBookingDetails()
     UI.renderBookingTotal()
-  },
-
-  initializeBooking: () => {
-    ELEMENTS.bookingNumNights().value = 1
+    UI.renderNights()
+    UI.renderModal()
   },
 
   renderBookingDetails: () => {
-    ELEMENTS.bookingRoomNumber().innerText = Booking.roomNumber
-    ELEMENTS.bookingRate().innerText = `$${Booking.rate}`
+    ELEMENTS.bookingRoomNumber().innerText = STORE.roomNumber
+    if (STORE.rate) {
+      ELEMENTS.bookingRate().innerText = `$${STORE.rate.toFixed(2)}`
+    }
+  },
+
+  renderNights: () => {
+    ELEMENTS.bookingNumNights().value = STORE.nights
   },
 
   renderBookingTotal: () => {
-    ELEMENTS.bookingTotal().innerText = `$${Booking.total()}`
+    if (STORE.total()) {
+      ELEMENTS.bookingTotal().innerText = `$${STORE.total().toFixed(2)}`
+    }
   },
 
-// Continue work below --v
-  showModal: function(e) {
-    e.preventDefault()
+  renderModal: () => {
+    STORE.modalVisible ? UI.showModal() : UI.hideModal()
+  },
 
+  showModal: function () {
     const modalContainer = ELEMENTS.modalContainer()
 
-    modalContainer.style.display = 'inherit'
+    modalContainer.style.display = ''
     modalContainer.style.visibility = 'visible'
   },
 
-  hideModal: function(e) {
-    e.preventDefault()
-
+  hideModal: function() {
+    console.log('hide modal')
     const modalContainer = ELEMENTS.modalContainer()
 
     modalContainer.style.display = 'none'
@@ -113,11 +133,10 @@ const UI = {
 }
 
 // Load all app event listeners
-ELEMENTS.addToCartBtns().forEach((btn) => {
-  btn.addEventListener('click', ACTIONS.addItemToCart)
+ELEMENTS.openBookingBtns().forEach((btn) => {
+  btn.addEventListener('click', ACTIONS.openBooking)
 })
 
-ELEMENTS.clearCartBtn().addEventListener('click', ACTIONS.clearCart)
+ELEMENTS.modalCloseBtn().addEventListener('click', ACTIONS.closeBooking)
 
-ELEMENTS.modalOpenBtn().addEventListener('click', UI.showModal)
-ELEMENTS.modalCloseBtn().addEventListener('click', UI.hideModal)
+ELEMENTS.bookingNumNights().addEventListener('input', ACTIONS.changeNights)
