@@ -1,6 +1,10 @@
 const pgp = require('pg-promise')();
 
-const db = pgp('postgres://justin@localhost:5432/hotel_db');
+const db = pgp({
+  host: 'localhost',
+  port: 5432,
+  database: 'hotel_db'
+});
 
 function allGuests() {
   return db.query(`
@@ -46,7 +50,7 @@ function availableRooms() {
 }
 
 function upcomingBookings(room) {
-  const room_query = room ? 'rooms.number = $1' : 'TRUE';
+  const room_query = room ? 'rooms.number = $1 AND' : '';
 
   return db.query(`
     SELECT
@@ -57,7 +61,7 @@ function upcomingBookings(room) {
     FROM bookings
     LEFT JOIN rooms ON rooms.id = bookings.room_id
     LEFT JOIN guests ON guests.id = bookings.guest_id
-    WHERE ${room_query} AND bookings.check_out > current_date
+    WHERE ${room_query} bookings.check_out >= current_date
     ORDER BY bookings.check_in ASC;
   `,
   [room]
@@ -68,7 +72,8 @@ module.exports = {
   allGuests,
   allRooms,
   availableRooms,
-  upcomingBookings
+  upcomingBookings,
+  end: pgp.end
 };
 
 if (!module.parent) {
